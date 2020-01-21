@@ -1,4 +1,4 @@
-Pokemo<template>
+<template>
   <li class="pokemon-index">
       <h3 @click=openModal>{{ pokemon.id }}. {{ name }}</h3>
     <span class="circle">

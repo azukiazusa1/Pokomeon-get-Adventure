@@ -4,6 +4,8 @@ import Adventure from '@/views/Adventure.vue'
 import Top from '@/views/Top.vue'
 import Pokedex from '@/views/Pokedex.vue'
 import RecentryGet from '@/views/RecentryGet.vue'
+import Field from '@/views/Field.vue'
+import Buttle from '@/views/Buttle.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/recentry-get',
     name: 'RecentryGet',
     component: RecentryGet
+  },
+  {
+    path: '/field/:id',
+    name: 'field',
+    component: Field
+  },
+  {
+    path: '/buttle/:id',
+    name: 'buttle',
+    component: Buttle
   },
 ]
 

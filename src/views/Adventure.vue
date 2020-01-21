@@ -1,42 +1,17 @@
 <template>
-  <div id="about">
-    <button @click="isShown = !isShown">表示の切り替え</button>
-    <transition>
-      <p v-show="isShown">Hello, World!</p>
-    </transition>
+  <div id="select-field">
+      <ul>
+        <li><router-link to="/field/1">もり</router-link></li>
+        <li><router-link to="/field/2">へいち</router-link></li>
+        <li><router-link to="/field/3">やま</router-link></li>
+        <li><router-link to="/field/4">みずうみ</router-link></li>
+        <li><router-link to="/field/5">うみ</router-link></li>
+      </ul>
   </div>
 </template>
 
 <script>
-export default {
-  name:'about',
-  data: function() {
-    return {
-      isShown: false
-    }
-  }
-}
 </script>
 
 <style>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 500ms ease-out;
-}
-
-.v-enter {
-  opacity: 0;
-}
-
-.v-enter-to {
-  opacity: 1;
-}
-
-.v-leave {
-  opacity: 1;
-}
-
-.v-leave-to {
-  opacity: 0;
-}
 </style>
