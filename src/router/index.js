@@ -36,7 +36,7 @@ const routes = [
     component: Field
   },
   {
-    path: '/buttle/:id',
+    path: '/buttle/:name',
     name: 'buttle',
     component: Buttle
   },

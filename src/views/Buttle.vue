@@ -1,6 +1,6 @@
 <template>
   <div>
-    ぽけもん{{ id }}
+    ぽけもん{{ name }}
   </div>
 </template>
 
@@ -8,7 +8,7 @@
   export default {
     data: function() {
       return {
-        id: this.$route.params.id
+        name: this.$route.params.name
       }
     }
   }
