@@ -2,7 +2,7 @@
   <div>
     <div id="anime-area">
         <div id="box-left"></div>
-        <div><img v-if="pokemon" :src="this.pokemon.sprites.front_default" /></div>
+        <div id="pokemon"><img :src="require(`@/assets/images/${this.$route.params.name}.png`)" /></div>
         <div id="box-right"></div>
     </div>
 
@@ -57,30 +57,17 @@ export default {
   #anime-area{
     display: flex;
   }
-  #box-right {
+  #box-left, #box-right {
     width: 50vw;
     height: 100vh;
     background-color: black;
+    z-index: 1
   }
-  #box-left {
-    width: 50vw;
-    height: 100vh;
-    background-color: black;
+  #pokemon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
   }
-  keyframes fadein {
-  0%{
-    opacity:0;
-  }
-  75%{
-    opacity:0.5;
-  }
-  100% {
-    opacity:1;
-  }
-}
-/* キーフレームをanimationプロパティで指定 */
-#pokemom{
-  animation: fadein 3s linear 0s 1;
-}
 
 </style>
