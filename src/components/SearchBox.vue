@@ -6,8 +6,6 @@
       <option value="johto">ジョウト</option>
       <option value="hohen">ホウエン</option>
       <option value="sinnoh">シンオウ</option>
-      <option value="karos">カロス</option>
-      <option value="alola">アローラ</option>
     </select>
 
     <label for="language">Language:</label>

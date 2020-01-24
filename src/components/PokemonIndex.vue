@@ -1,8 +1,8 @@
 <template>
-  <li class="pokemon-index">
-      <h3 @click=openModal>{{ pokemon.id }}. {{ name }}</h3>
+  <li class="pokemon-index" v-if="registered">
+      <h3 id="poke-name" @click=openModal>{{ pokemon.id }}. {{ name }}</h3>
     <span class="circle">
-      <img v-bind:src="sprites" @click=chengeSprites />
+      <img id="poke-img" v-bind:src="sprites"/>
     </span>
       <div>{{ type }}</div>
       <div>{{ genera }}</div>
@@ -23,6 +23,16 @@
         </pokemon-details>
       </div>
   </li>
+  <li v-else>
+    <h3>{{ pokemon.id }}.  ???? </h3>
+    <span>
+      <img :src="require(`@/assets/none.jpg`)"/>
+    </span>
+      <div>《??》</div>
+      <div>??ポケモン</div>
+      <div>たかさ: ??m</div>
+      <div>おもさ: ??Kg</div>
+  </li>
 </template>
 
 <script>
@@ -40,21 +50,23 @@ export default {
       species : null,
       name: null,
       genera: null,
-      sprites: null,
+      sprites: require(`@/assets/images/${this.pokemon.name}.png`),
       type: null,
       types: [],
       modal: false,
       front: true,
       shiny: false,
+      registered: false
     }
   },
+  created () {
+    this.isRegistered()
+  },
   mounted () {
-    // 色違いの判定
-    if (Math.random() < 0.03) {
-      this.shiny = true
+    if (this.registered) {
+      this.getSpecies()
+      this.getTypes()
     }
-    this.getSpecies()
-    this.getTypes()
   },
   mixins: [mixin],
   methods: {
@@ -69,29 +81,14 @@ export default {
         console.error(err)
       }
     },
-    getSprites: function() {
-      if (this.shiny) {
-          if (this.front) {
-            this.sprites = this.pokemon.sprites.front_shiny;
-          } else {
-            this.sprites = this.pokemon.sprites.back_shiny;
-          }
-      } else {
-        if (this.front) {
-          this.sprites =  this.pokemon.sprites.front_default;
-        } else {
-          this.sprites =  this.pokemon.sprites.back_default;
-        }
-      }
+    isRegistered: function() {
+      this.registered = this.$store.getters.isRegistedId(this.pokemon.id)
     },
     openModal() {
       this.modal = true;
     },
     closeModal() {
       this.modal = false;
-    },
-    chengeSprites() {
-      this.front = !this.front;
     }
   },
   components: {
@@ -136,21 +133,20 @@ export default {
   border-radius: 50%;
   background: #ccc;
 }
-img, h3 {
+#poke-img, #pokeName {
   cursor: pointer;
 }
 
+#poke-img:hover {
+  transition-duration: 0.3s;
+  transform: scale(1.5);
+  transition-duration: 0.3s;
+}
 .pokemon-index {
   text-align: center;
 }
-h3 {
+
+#poke-name {
   text-decoration: underline;
-}
-img {
-  transition-duration: 0.3s;
-}
-img:hover {
-  transform: scale(1.5);
-  transition-duration: 0.3s;
 }
 </style>

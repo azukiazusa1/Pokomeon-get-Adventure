@@ -100,7 +100,7 @@ export default {
       } finally {
         this.loading = false;
       }
-    }
+    },
   },
   created () {
     this.get();

@@ -121,6 +121,7 @@ export default {
       console.log(random)
       if (random < caputureRate) {
         this.$store.commit('increment')
+        this.$store.commit('registId', this.pokemon.id)
         alert('get')
         this.modal = true
       } else {
