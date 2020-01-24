@@ -24,8 +24,8 @@ export default {
       })
       const encountPokemons = (pokemons) => {
         const encountPokemons = []
-        // 出現数 15~5匹の範囲で出現
-        const appearanceNum = Math.floor(Math.random()*(15-3)+3);
+        // 出現数 11~3匹の範囲で出現
+        const appearanceNum = Math.floor(Math.random()*(11-3)+3);
         for (let i = appearanceNum; i > 0; i--) {
           const encount = Math.random() * totalRate.rate;
           let searchPosition = 0.0

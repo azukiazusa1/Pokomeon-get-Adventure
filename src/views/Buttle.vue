@@ -1,15 +1,27 @@
 <template>
-  <div>
+  <div id='A'>
     <div id="anime-area">
         <div id="box-left"></div>
-        <div id="pokemon">
-          <transition mode="in-out" v-on:enter="enter">
-            <img :key=1 v-if="show" id="img" :src="require(`@/assets/images/${this.$route.params.name}.png`)" />
-            <img :key=2 v-else id="ball" :src="require(`@/assets/ball.png`)" />
-          </transition>
-          <button @click="throwBall" v-if="show">ぼーるをなげる</button>
-          <button @click="$router.go(-1)" v-if="show">にげる</button>
-        </div>
+          <pokemon-details
+          @close="$router.go(-1)"
+          v-if="modal"
+          v-bind:pokemon="pokemon"
+          v-bind:species="species"
+          v-bind:name="name"
+          v-bind:genera="genera"
+          v-bind:type="type"
+          v-bind:sprites="sprites"
+          v-bind:local="local"
+        >
+        </pokemon-details>
+          <div  v-else id="pokemon">
+            <transition mode="in-out" v-on:enter="enter">
+              <img :key=1 v-if="show" id="img" :src="sprites" />
+              <img :key=2 v-else id="ball" :src="require(`@/assets/ball.png`)" />
+            </transition>
+            <button @click="throwBall" v-if="show">ぼーるをなげる</button>
+            <button @click="$router.go(-1)" v-if="show">にげる</button>
+          </div>
         <div id="box-right"></div>
     </div>
 
@@ -19,11 +31,21 @@
 <script>
 import axios from 'axios'
 import anime from 'animejs'
+import mixin from '@/mixin'
+import PokemonDetails from '@/components/PokemonDetails'
 export default {
   data: function() {
     return {
       pokemon: null,
-      show: true
+      species: null,
+      show: true,
+      rateModify: 0,
+      modal: false,
+      name: null,
+      genera: null,
+      sprites: require(`@/assets/images/${this.$route.params.name}.png`),
+      type: null,
+      local: 'JP'
     }
   },
   created() {
@@ -32,17 +54,22 @@ export default {
   mounted() {
     this.visitingAnime()
   },
+  mixins: [mixin],
   methods: {
     getPokemon: async function() {
       try {
-        const url = `${this.$url}pokemon/${this.$route.params.name}`
-        const result = await axios.get(url)
-        this.pokemon = result.data
+        const result1 = await axios.get(`${this.$url}pokemon-species/${this.$route.params.name}`)
+        this.species = result1.data
+
+        const result2 = await axios.get(`${this.$url}pokemon/${this.$route.params.name}`)
+        this.pokemon = result2.data
+        this.getI18nName()
+        this.getI18nGenera()
+        this.getTypes()
       } catch {
         alert('通信エラーが発生しました。')
       }
     },
-
     visitingAnime: function() {
       const animaTime = 2500
       anime({
@@ -60,9 +87,7 @@ export default {
     },
     enter: function(dom) {
       if (dom.id === 'ball') {
-      const tl = anime.timeline({
-
-      })
+      const tl = anime.timeline()
       tl
       .add({targets: dom,
         translateX: [-100, 0],
@@ -86,51 +111,72 @@ export default {
         rotate: 50,
         complete: this.canGet
       })
-
-
       }
     },
 
     canGet: function() {
-
+      const caputureRate = this.species.capture_rate + this.rateModify
+      console.log(caputureRate)
+      const random = Math.floor(Math.random()*(100))
+      console.log(random)
+      if (random < caputureRate) {
+        this.$store.commit('increment')
+        alert('get')
+        this.modal = true
+      } else {
         this.show = true
+        // 捕獲に失敗するたびに補正をかける
+        this.rateModify += 10
+      }
 
     },
-
     throwBall: function() {
       this.show = !this.show
-
-    }
+    },
+  },
+  components: {
+    PokemonDetails
   }
 }
 </script>
 <style scoped>
-  #anime-area{
-    display: flex;
+@media screen and (max-width: 480px) {
+   #box-left{
+    width: 100vw;
+    height: 100vw;
+    background-color: black;
+    z-index: 1
   }
+}
+
+@media screen and (min-width: 481px) {
   #box-left, #box-right {
-    width: 50vw;
+    width: 100vw;
     height: 100vh;
     background-color: black;
     z-index: 1
   }
-  #pokemon, img, #ball{
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
-  #pokemon, #ball {
-    position: absolute;
-  }
-  #ball {
-    border-radius: 50%;
-    background:linear-gradient(0deg,black 0%,black 50%,red 50%,red 100%);
-    width: 10px;
-    height: 10px;
-  }
-  img {
-    display: block;
-  }
+}
+
+#ball {
+  width: 20px;
+  height: 20px;
+}
+#anime-area{
+  display: flex;
+}
+
+#pokemon, img, #ball{
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+#pokemon, #ball {
+  position: absolute;
+}
+img {
+  display: block;
+}
 
 .v-enter-active {
   transition: all .3s ease;
@@ -138,8 +184,7 @@ export default {
 .v-leave-active {
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.v-enter, .v-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.v-enter, .v-leave-to {
   transform: translateY(-10px);
   opacity: 0;
 }

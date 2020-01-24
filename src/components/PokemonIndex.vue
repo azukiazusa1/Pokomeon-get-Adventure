@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios'
+import mixin from '@/mixin'
 import PokemonDetails from '@/components/PokemonDetails.vue'
 
 export default {
@@ -55,6 +56,7 @@ export default {
     this.getSpecies()
     this.getTypes()
   },
+  mixins: [mixin],
   methods: {
     getSpecies: async function() {
       try {
@@ -66,16 +68,6 @@ export default {
       } catch(err){
         console.error(err)
       }
-    },
-    getI18nName: function() {
-        const names = this.species.names
-        let result = names.find(v => v.language.name === this.$language[this.local])
-        this.name = result.name
-    },
-    getI18nGenera: function() {
-        const genera = this.species.genera
-        const result = genera.find(v => v.language.name === this.$language[this.local])
-        this.genera = result.genus
     },
     getSprites: function() {
       if (this.shiny) {
@@ -91,22 +83,6 @@ export default {
           this.sprites =  this.pokemon.sprites.back_default;
         }
       }
-    },
-    getTypes: async function () {
-      const urls = []
-      for (const type of this.pokemon.types) {
-        urls.push(type.type.url)
-      }
-      const types = await Promise.all(urls.map(axios.get))
-      this.getI18nType(types)
-    },
-    getI18nType: function(types) {
-      let result_types = ''
-      for (const type of types) {
-        const type_name = type.data.names.find(v => v.language.name === this.$language[this.local])
-        result_types += `《${type_name.name}》`
-      }
-      this.type = result_types
     },
     openModal() {
       this.modal = true;
