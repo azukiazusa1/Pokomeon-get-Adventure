@@ -76,7 +76,6 @@ export default {
         this.species = species.data
         this.getI18nName()
         this.getI18nGenera()
-        this.getSprites()
       } catch(err){
         console.error(err)
       }

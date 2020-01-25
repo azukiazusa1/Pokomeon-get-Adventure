@@ -1,5 +1,6 @@
 <template>
-  <div id='A'>
+  <div>
+    <flash-message></flash-message>
     <div id="anime-area">
         <div id="box-left"></div>
           <pokemon-details
@@ -116,14 +117,16 @@ export default {
 
     canGet: function() {
       const caputureRate = this.species.capture_rate + this.rateModify
-      console.log(caputureRate)
       const random = Math.floor(Math.random()*(100))
-      console.log(random)
       if (random < caputureRate) {
         this.$store.commit('increment')
         this.$store.commit('registId', this.pokemon.id)
-        alert('get')
-        this.modal = true
+        this.flash(`やったー！${this.name}をつかまえた！`, 'success', {
+          timeout: 1000,
+          beforeDestroy: () => {
+            this.modal = true
+          }
+          });
       } else {
         this.show = true
         // 捕獲に失敗するたびに補正をかける
@@ -134,6 +137,9 @@ export default {
     throwBall: function() {
       this.show = !this.show
     },
+    a: function() {
+      this.modal = true
+    }
   },
   components: {
     PokemonDetails
