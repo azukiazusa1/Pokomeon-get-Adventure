@@ -6,6 +6,7 @@ import Pokedex from '@/views/Pokedex.vue'
 import RecentryGet from '@/views/RecentryGet.vue'
 import Field from '@/views/Field.vue'
 import Buttle from '@/views/Buttle.vue'
+import Trophy from '@/views/Trophy.vue'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ const routes = [
     name: 'buttle',
     component: Buttle
   },
+  {
+    path: '/trophy',
+    name: 'trophy',
+    component: Trophy
+  }
 ]
 
 const router = new VueRouter({

@@ -8,6 +8,7 @@
             <li><router-link to="/adventure">ポケモンをさがしにいく</router-link></li>
             <li><router-link to="/pokedex">ポケモンずかんをみる</router-link></li>
             <li><router-link to="/recentry-get">さいきんつかまえたポケモン</router-link></li>
+            <li><router-link to="/trophy">トロフィー</router-link></li>
           </ul>
         </nav>
       </div>
@@ -20,6 +21,7 @@
               <li><router-link to="/adventure">さがす</router-link></li>
               <li><router-link to="/pokedex">ポケモンずかん</router-link></li>
               <li><router-link to="/recentry-get">であったポケモン</router-link></li>
+              <li><router-link to="/trophy">トロフィー</router-link></li>
             </ul>
           </nav>
         </Slide>

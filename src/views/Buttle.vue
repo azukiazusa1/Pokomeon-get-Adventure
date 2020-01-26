@@ -21,7 +21,7 @@
               <img :key=1 v-if="show" id="img" :src="sprites" />
               <img :key=2 v-else id="ball" :src="require(`@/assets/icon/ball.png`)" />
             </transition>
-            <button @click="throwBall" v-if="show">ぼーるをなげる</button>
+            <button @click="throwBall" v-if="show">ボールをなげる</button>
             <button @click="$router.go(-1)" v-if="show">にげる</button>
           </div>
         <div id="box-right"></div>
@@ -32,6 +32,7 @@
 <script>
 import axios from 'axios'
 import anime from 'animejs'
+import moment from 'moment'
 import mixin from '@/mixin'
 import PokemonDetails from '@/components/PokemonDetails'
 export default {
@@ -121,8 +122,8 @@ export default {
       const caputureRate = this.species.capture_rate + this.rateModify
       const random = Math.floor(Math.random()*(100))
       if (random < caputureRate) {
-        this.$store.commit('increment')
         this.registPokedex()
+        this.registRecentryGet()
         this.flash(`やったー！${this.name}をつかまえた！`, 'success', {
           important: true,
           timeout: 1000,
@@ -148,6 +149,17 @@ export default {
         habitat: this.habitat
       }
       this.$store.commit('registPokedex', pokeData)
+    },
+    registRecentryGet: function() {
+      const m = moment().format('YYYY-MM-DD HH:mm')
+      const pokeData = {
+        id: this.pokemon.id,
+        name: this.name,
+        englishName: this.pokemon.name,
+        date: m,
+        habitat: this.habitat
+      }
+      this.$store.commit('registRecentryGet', pokeData)
     },
     throwBall: function() {
       this.show = !this.show

@@ -1,5 +1,6 @@
 <template>
   <div id="pokedex">
+    <h2> つかまえたかず：{{ registPokedexCount }} / {{ registPokedexCountAll }} </h2>
     <search-box
       id="search-box"
       v-if="searchBox"
@@ -37,9 +38,7 @@ export default {
     return {
       pokemons: [],
       searchBox: false,
-      loading: true,
-      next: null,
-      empty: false,
+      count: 0,
       word: null,
       type: null,
       filterQuery: {
@@ -61,7 +60,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'filteredPokedex'
+      'filteredPokedex',
+      'registPokedexCount',
+      'registPokedexCountAll'
     ]),
   },
   watch: {
@@ -70,17 +71,23 @@ export default {
         this.handleChangeQuery()
       },
       deep: true
+    },
+    registPokedexCount: function() {
+      this.setCount(this.registPokedexCount)
     }
   },
   components: {
     SearchBox,
     PokemonIndex,
-  }
+  },
 }
 
 </script>
 
 <style scoped>
+h2{
+  color: #FFF
+}
 #pokedex{
   padding:0;
   width:100%;

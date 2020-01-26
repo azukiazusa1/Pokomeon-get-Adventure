@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
 
 const initialState = {
   count: 0,
   pokedex: Array.from(new Array(493).fill({})),
+  recentryGet: [],
   filterQuery: {},
   AREA: {
     kanto: {start:0, end:150},
@@ -25,9 +27,6 @@ const initialState = {
 export default new Vuex.Store({
   state: initialState,
   mutations: {
-    increment (state) {
-      state.count++
-    },
     registPokedex (state, pokeData) {
       if (!state.pokedex[pokeData.id - 1].hasOwnProperty('id')) {
         state.pokedex[pokeData.id - 1] = pokeData
@@ -35,12 +34,12 @@ export default new Vuex.Store({
     },
     setFilterQuery(state, filterQuery) {
       state.filterQuery = {...filterQuery}
+    },
+    registRecentryGet(state, pokeData) {
+      state.recentryGet.unshift(pokeData)
     }
   },
   getters: {
-    isRegistedId: (state) => (id) => {
-      return state.pokedexIds.includes(id)
-    },
     filteredPokedex (state) {
       let data = state.pokedex
       if (state.filterQuery.area) {
@@ -61,6 +60,14 @@ export default new Vuex.Store({
       }
 
       return data
+    },
+    registPokedexCount: (state, getters) => getters.filteredPokedex.filter(v => v.id).length,
+    registPokedexCountAll: (state, getters) => getters.filteredPokedex.length,
+    limitedRecentryGet: (state) => state.recentryGet.slice(0, 20),
+    recentryGetCount: (state) => state.recentryGet.length,
+    todayGetCount: (state) => {
+      const today = moment().startOf('days')
+      return state.recentryGet.filter(v => moment(v.date).isAfter(today)).length
     }
   },
   plugins: [createPersistedState()]
