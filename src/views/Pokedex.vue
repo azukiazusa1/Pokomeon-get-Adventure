@@ -72,9 +72,6 @@ export default {
       },
       deep: true
     },
-    registPokedexCount: function() {
-      this.setCount(this.registPokedexCount)
-    }
   },
   components: {
     SearchBox,
