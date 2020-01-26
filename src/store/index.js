@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const initialState = {
   count: 0,
-  pokedexIds: []
+  pokedex: Array.from(new Array(493).fill({}))
 }
 
 export default new Vuex.Store({
@@ -14,9 +14,9 @@ export default new Vuex.Store({
     increment (state) {
       state.count++
     },
-    registId (state, id) {
-      if (!state.pokedexIds.includes(id)) {
-        state.pokedexIds.push(id)
+    registPokedex (state, pokeData) {
+      if (!state.pokedex[pokeData.id - 1].hasOwnProperty('id')) {
+        state.pokedex[pokeData.id - 1] = pokeData
       }
     }
   },

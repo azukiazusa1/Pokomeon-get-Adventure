@@ -102,7 +102,7 @@ export default {
   position: fixed;
   background: #0e8fa1;
   color: #fff;
-  top: 0;
+  top: 70px;
   left: 0;
   margin: 0;
   padding: 10px;
@@ -125,7 +125,7 @@ export default {
   margin-top: 5px;
   border: 1px solid #333;
   height: 0;
-width: 100%;
+  width: 100%;
   transition: .5s;
   visibility: hidden;
 }

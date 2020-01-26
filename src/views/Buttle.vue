@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="buttle">
     <flash-message></flash-message>
     <div id="anime-area">
         <div id="box-left"></div>
@@ -25,7 +25,6 @@
           </div>
         <div id="box-right"></div>
     </div>
-
   </div>
 </template>
 
@@ -71,6 +70,7 @@ export default {
         alert('通信エラーが発生しました。')
       }
     },
+
     visitingAnime: function() {
       const animaTime = 2500
       anime({
@@ -88,30 +88,30 @@ export default {
     },
     enter: function(dom) {
       if (dom.id === 'ball') {
-      const tl = anime.timeline()
-      tl
-      .add({targets: dom,
-        translateX: [-100, 0],
-        translateY: [50, -50],
-        easing: 'easeInOutCirc'
-      })
-      .add({targets: dom,
-        translateY: 100,
-        easing: 'easeInBack'
-      })
-      .add({
-        targets: dom,
-        rotate: 50,
-      })
-      .add({
-        targets: dom,
-        rotate: -50,
-      })
-      .add({
-        targets: dom,
-        rotate: 50,
-        complete: this.canGet
-      })
+        const tl = anime.timeline()
+        tl
+        .add({targets: dom,
+          translateX: [-100, 0],
+          translateY: [50, -50],
+          easing: 'easeInOutCirc'
+        })
+        .add({targets: dom,
+          translateY: 100,
+          easing: 'easeInBack'
+        })
+        .add({
+          targets: dom,
+          rotate: 50,
+        })
+        .add({
+          targets: dom,
+          rotate: -50,
+        })
+        .add({
+          targets: dom,
+          rotate: 50,
+          complete: this.canGet
+        })
       }
     },
 
@@ -120,19 +120,31 @@ export default {
       const random = Math.floor(Math.random()*(100))
       if (random < caputureRate) {
         this.$store.commit('increment')
-        this.$store.commit('registId', this.pokemon.id)
+        this.registPokedex()
         this.flash(`やったー！${this.name}をつかまえた！`, 'success', {
+          important: true,
           timeout: 1000,
           beforeDestroy: () => {
             this.modal = true
           }
-          });
+        });
       } else {
         this.show = true
         // 捕獲に失敗するたびに補正をかける
         this.rateModify += 10
       }
-
+    },
+    registPokedex: function() {
+      const pokeData = {
+        id: this.pokemon.id,
+        name: this.name,
+        englishName: this.pokemon.name,
+        genera: this.genera,
+        type: this.type,
+        height: this.pokemon.height,
+        weight: this.pokemon.weight,
+      }
+      this.$store.commit('registPokedex', pokeData)
     },
     throwBall: function() {
       this.show = !this.show
@@ -169,6 +181,7 @@ export default {
   width: 20px;
   height: 20px;
 }
+
 #anime-area{
   display: flex;
 }
@@ -178,7 +191,13 @@ export default {
   right: 0;
   margin: auto;
 }
-#pokemon, #ball {
+
+#pokemon{
+  position: absolute;
+  padding-top: 70px
+}
+
+#ball {
   position: absolute;
 }
 img {

@@ -1,15 +1,15 @@
 <template>
   <li class="pokemon-index" v-if="registered">
-      <h3 id="poke-name" @click=openModal>{{ pokemon.id }}. {{ name }}</h3>
+      <h3 id="poke-name" @click=openModal>{{ pokemon.id }}. {{ pokemon.name }}</h3>
     <span class="circle">
-      <img id="poke-img" v-bind:src="sprites"/>
+      <img id="poke-img" v-bind:src="require(`@/assets/images/${this.pokemon.englishName}.png`)"/>
     </span>
-      <div>{{ type }}</div>
-      <div>{{ genera }}</div>
+      <div>{{ pokemon.type }}</div>
+      <div>{{ pokemon.genera }}</div>
       <div>たかさ: {{ pokemon.height / 10 }}m</div>
       <div>おもさ: {{ pokemon.weight / 10 }}Kg</div>
       <div>
-        <pokemon-details
+<!--         <pokemon-details
           @close="closeModal"
           v-if="modal"
           v-bind:pokemon="pokemon"
@@ -20,11 +20,11 @@
           v-bind:sprites="sprites"
           v-bind:local="local"
         >
-        </pokemon-details>
+        </pokemon-details> -->
       </div>
   </li>
   <li v-else>
-    <h3>{{ pokemon.id }}.  ???? </h3>
+    <h3>{{ index + 1 }}.  ???? </h3>
     <span>
       <img :src="require(`@/assets/none.jpg`)"/>
     </span>
@@ -36,21 +36,19 @@
 </template>
 
 <script>
-import axios from 'axios'
-import mixin from '@/mixin'
-import PokemonDetails from '@/components/PokemonDetails.vue'
+// import PokemonDetails from '@/components/PokemonDetails.vue'
 
 export default {
   props: {
     pokemon: Object,
-    local: String
+    local: String,
+    index: Number
   },
   data: function() {
     return {
       species : null,
       name: null,
       genera: null,
-      sprites: require(`@/assets/images/${this.pokemon.name}.png`),
       type: null,
       types: [],
       modal: false,
@@ -62,26 +60,9 @@ export default {
   created () {
     this.isRegistered()
   },
-  mounted () {
-    if (this.registered) {
-      this.getSpecies()
-      this.getTypes()
-    }
-  },
-  mixins: [mixin],
   methods: {
-    getSpecies: async function() {
-      try {
-        const species = await axios.get(this.pokemon.species.url)
-        this.species = species.data
-        this.getI18nName()
-        this.getI18nGenera()
-      } catch(err){
-        console.error(err)
-      }
-    },
-    isRegistered: function() {
-      this.registered = this.$store.getters.isRegistedId(this.pokemon.id)
+    isRegistered() {
+      this.registered = this.pokemon.hasOwnProperty('id')
     },
     openModal() {
       this.modal = true;
@@ -90,9 +71,9 @@ export default {
       this.modal = false;
     }
   },
-  components: {
-    PokemonDetails
-  }
+  // components: {
+  //   PokemonDetails
+  // }
 }
 
 </script>

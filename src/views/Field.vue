@@ -2,10 +2,8 @@
   <div>
     <div>フィールド{{ id }}</div>
     <encount-pokemon v-if="pokemons" v-bind:pokemons="pokemons"></encount-pokemon>
-    <footer>
     <button @click="reload">もっとさがしてみる</button>
     <router-link to="/adventure">ちがうばしょをさがしてみる</router-link>
-    </footer>
   </div>
 </template>
 

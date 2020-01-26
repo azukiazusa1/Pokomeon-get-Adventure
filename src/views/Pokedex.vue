@@ -1,20 +1,19 @@
 <template>
-  <div id="app">
-    <header>
-      <search-box
-        v-bind:area.sync="area"
-        v-bind:local.sync="local"
-        v-bind:word.sync="word"
-        v-bind:type.sync="type"
-      ></search-box>
-    </header>
+  <div id="pokedex">
+<!--     <search-box
+      v-bind:area.sync="area"
+      v-bind:local.sync="local"
+      v-bind:word.sync="word"
+      v-bind:type.sync="type"
+    ></search-box> -->
     <div id="main">
       <ul>
         <pokemon-index
-          v-for="pokemon in pokemons"
-          v-bind:pokemon="pokemon.data"
+          v-for="(pokemon, index) in pokemons"
+          v-bind:pokemon="pokemon"
           v-bind:local="local"
-          :key="pokemon.data.id"
+          v-bind:index="index"
+          :key="index"
         ></pokemon-index>
       </ul>
         <div id="next">
@@ -27,16 +26,14 @@
 </template>
 
 <script>
-import axios from 'axios'
 import PokemonIndex from '@/components/PokemonIndex.vue'
-import SearchBox from '@/components/SearchBox.vue'
+// import SearchBox from '@/components/SearchBox.vue'
 
 export default {
   name: 'app',
   data: function() {
     return {
-      pokemons: [],
-      base_url: `${this.$url}pokemon?offset=0&limit=21`,
+      pokemons: this.$store.state.pokedex,
       loading: true,
       next: null,
       empty: false,
@@ -46,86 +43,8 @@ export default {
       local: 'JP'
     }
   },
-  methods: {
-    get: async function(url = this.base_url) {
-      try {
-        this.loading = true;
-        const urls = [];
-        const response = await axios.get(url);
-        this.next = response.data.next;
-        const items = response.data.results;
-        for (let item of items) {
-          urls.push(item.url);
-        }
-        this.pokemons = this.pokemons.concat(await Promise.all(urls.map(axios.get)));
-        this.empty = false;
-      } catch(e){
-        this.empty = true;
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    searchByWord: async function(url) {
-      try {
-        this.pokemons = [];
-        this.loading = true;
-        this.next = null;
-        const response = await axios.get(url);
-        this.pokemons.push(response);
-        this.empty = false;
-      } catch(e) {
-        this.empty = true;
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    searchByType: async function() {
-      try {
-        this.pokemons = [];
-        this.loading = true;
-        this.next = null
-        let urls = [];
-        const response = await axios.get(`${this.$url}type/${this.type}`);
-        const items = response.data.pokemon;
-        for (let item of items) {
-          urls.push(item.pokemon.url);
-        }
-        this.pokemons = this.pokemons.concat(await Promise.all(urls.map(axios.get)));
-        this.empty = false;
-      } catch(e){
-        this.empty = true;
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-  created () {
-    this.get();
-  },
-  watch: {
-    area: function () {
-      this.pokemons = [];
-      this.get(`${this.$url}pokemon${this.$area[this.area]}`);
-    },
-    word: function() {
-      // APIは小文字のみ受付
-      const word = this.word.toLowerCase();
-      this.searchByWord(`${this.$url}pokemon/${word}`);
-    },
-    type: function() {
-      // タイプ：すべてが選択されたときは通常の検索
-      if (this.type === 'all') {
-        this.get();
-      } else {
-      this.searchByType();
-      }
-    }
-  },
   components: {
-    SearchBox,
+    // SearchBox,
     PokemonIndex,
   }
 }
@@ -133,13 +52,14 @@ export default {
 </script>
 
 <style scoped>
-#app{
+#pokedex{
   padding:0;
   width:100%;
   clear:both;
+  background: #F35F57;
 }
 
-#app ul{
+#pokedex ul{
   display: flex;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
@@ -148,7 +68,7 @@ export default {
 }
 
 #main {
-  padding-top: 20px;
+  padding-top: 60px;
 }
 
 #next {
