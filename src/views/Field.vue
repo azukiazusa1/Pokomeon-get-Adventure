@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>フィールド{{ id }}</div>
+  <div id="encount-pokemon" :style="{backgroundImage: `url(${img})`}">
+    <h2>{{ $store.state.HABITAT[this.name] }}</h2>
     <encount-pokemon v-if="pokemons" v-bind:pokemons="pokemons"></encount-pokemon>
     <button @click="reload">もっとさがしてみる</button>
     <router-link to="/adventure">ちがうばしょをさがしてみる</router-link>
@@ -17,8 +17,9 @@ const EncountPokemon = function () {
 export default {
   data: function() {
     return {
-      id: this.$route.params.id,
-      pokemons: null
+      name: this.$route.params.name,
+      pokemons: null,
+      img: require(`@/assets/fields/background/${this.$route.params.name}.jpeg`)
     }
   },
   created() {
@@ -26,7 +27,7 @@ export default {
   },
   methods: {
     getFieldPokemons: async function() {
-      const url = `${this.$url}pal-park-area/${this.id}`
+      const url = `${this.$url}pal-park-area/${this.name}`
       const result = await axios.get(url)
       this.pokemons = result.data.pokemon_encounters
     },
@@ -39,3 +40,10 @@ export default {
   }
 }
 </script>
+<style>
+  #encount-pokemon {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+  }
+</style>

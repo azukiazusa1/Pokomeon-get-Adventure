@@ -16,7 +16,7 @@ const initialState = {
   HABITAT: {
     forest: 'もり',
     field: 'へいち',
-    mountain: '山',
+    mountain: 'やま',
     pond: 'みずうみ',
     sea: 'うみ',
   }
