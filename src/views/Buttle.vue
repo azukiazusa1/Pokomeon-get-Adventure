@@ -11,6 +11,7 @@
           v-bind:name="name"
           v-bind:genera="genera"
           v-bind:type="type"
+          v-bind:habitat="habitat"
           v-bind:sprites="sprites"
           v-bind:local="local"
         >
@@ -18,7 +19,7 @@
           <div  v-else id="pokemon">
             <transition mode="in-out" v-on:enter="enter">
               <img :key=1 v-if="show" id="img" :src="sprites" />
-              <img :key=2 v-else id="ball" :src="require(`@/assets/ball.png`)" />
+              <img :key=2 v-else id="ball" :src="require(`@/assets/icon/ball.png`)" />
             </transition>
             <button @click="throwBall" v-if="show">ぼーるをなげる</button>
             <button @click="$router.go(-1)" v-if="show">にげる</button>
@@ -66,6 +67,7 @@ export default {
         this.getI18nName()
         this.getI18nGenera()
         this.getTypes()
+        this.habitat = this.species.pal_park_encounters[0].area.name
       } catch {
         alert('通信エラーが発生しました。')
       }
@@ -143,6 +145,7 @@ export default {
         type: this.type,
         height: this.pokemon.height,
         weight: this.pokemon.weight,
+        habitat: this.habitat
       }
       this.$store.commit('registPokedex', pokeData)
     },

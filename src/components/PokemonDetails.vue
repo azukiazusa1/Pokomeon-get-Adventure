@@ -13,6 +13,7 @@
               <div>{{ genera }}</div>
               <div>たかさ: {{ pokemon.height / 10 }}m</div>
               <div>おもさ: {{ pokemon.weight / 10 }}Kg</div>
+              <div>せいそくち: {{ $store.state.HABITAT[habitat] }}</div>
             </div>
             <div class="d">
               <div>とくせい</div>
@@ -77,6 +78,7 @@ export default {
   'type',
   'name',
   'genera',
+  'habitat',
   'sprites',
   'local'
   ],

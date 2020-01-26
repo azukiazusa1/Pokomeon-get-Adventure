@@ -31,7 +31,7 @@ const routes = [
     component: RecentryGet
   },
   {
-    path: '/field/:id',
+    path: '/field/:name',
     name: 'field',
     component: Field
   },

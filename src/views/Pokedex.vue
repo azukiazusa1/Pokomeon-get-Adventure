@@ -1,50 +1,79 @@
 <template>
   <div id="pokedex">
-<!--     <search-box
-      v-bind:area.sync="area"
-      v-bind:local.sync="local"
-      v-bind:word.sync="word"
-      v-bind:type.sync="type"
-    ></search-box> -->
-    <div id="main">
-      <ul>
-        <pokemon-index
-          v-for="(pokemon, index) in pokemons"
-          v-bind:pokemon="pokemon"
-          v-bind:local="local"
-          v-bind:index="index"
-          :key="index"
-        ></pokemon-index>
-      </ul>
-        <div id="next">
-          <p v-if="empty" id="empty">見つかりませんでした。</p>
-          <p v-else-if="loading">Now Loading...</p>
-          <p v-else-if="next" @mouseover="get(next)">もっとみる</p>
-        </div>
+    <search-box
+      id="search-box"
+      v-if="searchBox"
+      v-bind:area.sync="filterQuery.area"
+      v-bind:word.sync="filterQuery.word"
+      v-bind:type.sync="filterQuery.type"
+      v-bind:habitat.sync="filterQuery.habitat"
+      @close="searchBox = false"
+    ></search-box>
+    <div @click="searchBox = false">
+      <a @click.stop.prevent="searchBox = !searchBox"><img :src="require(`@/assets/icon/search.png`)" id="search-btn"/></a>
+      <div id="main">
+        <ul>
+          <pokemon-index
+            v-for="(pokemon, index) in filteredPokedex"
+            v-bind:pokemon="pokemon"
+            v-bind:local="local"
+            v-bind:index="index + (filterQuery.area ? $store.state.AREA[filterQuery.area].start : 0)"
+            :key="index"
+          ></pokemon-index>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PokemonIndex from '@/components/PokemonIndex.vue'
-// import SearchBox from '@/components/SearchBox.vue'
+import SearchBox from '@/components/SearchBox.vue'
 
 export default {
   name: 'app',
   data: function() {
     return {
-      pokemons: this.$store.state.pokedex,
+      pokemons: [],
+      searchBox: false,
       loading: true,
       next: null,
       empty: false,
-      area: 'kanto',
       word: null,
       type: null,
+      filterQuery: {
+        area: '',
+        word: '',
+        type: '',
+        habitat: '',
+      },
       local: 'JP'
     }
   },
+  created(){
+    this.$store.commit('setFilterQuery', this.filterQuery)
+  },
+  methods: {
+    handleChangeQuery() {
+      this.$store.commit('setFilterQuery', this.filterQuery)
+    },
+  },
+  computed: {
+    ...mapGetters([
+      'filteredPokedex'
+    ]),
+  },
+  watch: {
+    filterQuery: {
+      handler: function() {
+        this.handleChangeQuery()
+      },
+      deep: true
+    }
+  },
   components: {
-    // SearchBox,
+    SearchBox,
     PokemonIndex,
   }
 }
@@ -55,6 +84,8 @@ export default {
 #pokedex{
   padding:0;
   width:100%;
+  height: 100vh;
+  overflow-y: scroll;
   clear:both;
   background: #F35F57;
 }
@@ -83,6 +114,14 @@ export default {
   right: 0;
   margin: auto;
 }
+
+#search-btn {
+  cursor: pointer;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+
 p {
   padding: 0.5em 1em;
   text-decoration: none;

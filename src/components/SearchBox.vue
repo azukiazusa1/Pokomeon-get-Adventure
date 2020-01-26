@@ -1,53 +1,59 @@
 <template>
   <div id="search-box">
-    <label for="area">地方：</label>
-    <select id="area" v-model="selectArea">
-      <option value="kanto">カントー</option>
-      <option value="johto">ジョウト</option>
-      <option value="hohen">ホウエン</option>
-      <option value="sinnoh">シンオウ</option>
-    </select>
-
-    <label for="language">Language:</label>
-    <select id="language" v-model="selectLocal">
-      <option value="JP">日本</option>
-      <option value="EN">英語</option>
-      <option value="KO">韓国</option>
-      <option value="FR">フランス</option>
-      <option value="DE">ドイツ</option>
-      <option value="ES">スペイン</option>
-      <option value="IT">イタリア</option>
-    </select>
-
-    <input type="checkbox" id="toggle-check" />
-    <label id="toggle-label" for="toggle-check">検索▼</label>
-    <div id="toggle-content">
-
-      <label for="word">ずかんNo または なまえ(英語のみ)：</label>
-      <input type="text" id="word" v-model="inputWord">
-
-      <label for="type">タイプ：</label>
-      <select id="type" v-model="selectType">
-        <option value="all">すべて</option>
-        <option value=1>ノーマル</option>
-        <option value=2>かくとう</option>
-        <option value=3>ひこう</option>
-        <option value=4>どく</option>
-        <option value=5>じめん</option>
-        <option value=6>いわ</option>
-        <option value=7>むし</option>
-        <option value=8>ゴースト</option>
-        <option value=9>はがね</option>
-        <option value=10>ほのお</option>
-        <option value=11>みず</option>
-        <option value=12>くさ</option>
-        <option value=13>でんき</option>
-        <option value=14>エスパー</option>
-        <option value=15>こおり</option>
-        <option value=16>ドラゴン</option>
-        <option value=17>あく</option>
-        <option value=18>フェアリー</option>
-      </select>
+    <h3>Search</h3>
+    <a id="close" @click="$emit('close')"><img :src="require(`@/assets/icon/close.png`)" width="20" height="20" /></a>
+    <div id="elements">
+      <ul>
+        <li>
+          <label for="area">地方：</label>
+          <select id="area" v-model="selectArea">
+            <option value="">ぜんこく</option>
+            <option value="kanto">カントー</option>
+            <option value="johto">ジョウト</option>
+            <option value="hohen">ホウエン</option>
+            <option value="sinnoh">シンオウ</option>
+          </select>
+          </li>
+        <li>
+          <label for="word">なまえ：</label>
+          <input type="text" id="word" v-model="inputWord">
+        </li>
+        <li>
+          <label for="type">タイプ：</label>
+          <select id="type" v-model="selectType">
+            <option value="">すべて</option>
+            <option value="ノーマル">ノーマル</option>
+            <option value="かくとう">かくとう</option>
+            <option value="ひこう">ひこう</option>
+            <option value="どく">どく</option>
+            <option value="じめん">じめん</option>
+            <option value="いわ">いわ</option>
+            <option value="むし">むし</option>
+            <option value="ゴースト">ゴースト</option>
+            <option value="はがね">はがね</option>
+            <option value="ほのお">ほのお</option>
+            <option value="みず">みず</option>
+            <option value="くさ">くさ</option>
+            <option value="でんき">でんき</option>
+            <option value="エスパー">エスパー</option>
+            <option value="こおり">こおり</option>
+            <option value="ドラゴン">ドラゴン</option>
+            <option value="あく">あく</option>
+            <option value="フェアリー">フェアリー</option>
+          </select>
+        </li>
+        <li>
+          <label for="habitat">せいそくち：</label>
+          <select id="habitat" v-model="selectHabitat">
+            <option value="">すべて</option>
+            <option value="forest">もり</option>
+            <option value="field">へいち</option>
+            <option value="moiuntain">やま</option>
+            <option value="pond">みずうみ</option>
+            <option value="sea">うみ</option>
+          </select>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -56,7 +62,6 @@
 export default {
   props: {
     area: String,
-    local: String,
     word: String,
     type: String,
   },
@@ -93,6 +98,14 @@ export default {
         this.$emit('update:type', type)
       }
     },
+    selectHabitat: {
+      get() {
+        return this.habitat
+      },
+      set(habitat) {
+        this.$emit('update:habitat', habitat)
+      }
+    },
   }
 }
 </script>
@@ -102,36 +115,31 @@ export default {
   position: fixed;
   background: #0e8fa1;
   color: #fff;
-  top: 70px;
-  left: 0;
-  margin: 0;
-  padding: 10px;
-  width: 100%;
-  height: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.4);
+  min-width: 200px;
+  min-height: 200px;
+  border-radius: 10px;
 }
 
-#toggle-check{
-  display: none;
+#elements{
+  position: absolute;
+  top: 50%;
+  transform : translateY(-50%);
+  font-weight: bold;
 }
 
-#toggle-label{
-  float: right;
-  margin-right: 10px;
+#close {
+  position: fixed;
+  top: 5%;
+  right: 5%;
 }
 
-#toggle-content {
-  background: #F4F5F7;
-  color: #000;
-  margin-top: 5px;
-  border: 1px solid #333;
-  height: 0;
-  width: 100%;
-  transition: .5s;
-  visibility: hidden;
+ul{
+  list-style: none;
+  padding: 0;
 }
-#toggle-check:checked + #toggle-label + #toggle-content{
-  height: 40px;
-  padding: 10px;
-  visibility: visible;
-}
+
 </style>

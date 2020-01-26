@@ -1,8 +1,8 @@
 <template>
-  <li class="pokemon-index" v-if="registered">
+  <li class="pokemon-index" v-if="pokemon.hasOwnProperty('id')">
       <h3 id="poke-name" @click=openModal>{{ pokemon.id }}. {{ pokemon.name }}</h3>
     <span class="circle">
-      <img id="poke-img" v-bind:src="require(`@/assets/images/${this.pokemon.englishName}.png`)"/>
+      <img id="poke-img" :src="require(`@/assets/images/${this.pokemon.englishName}.png`)"/>
     </span>
       <div>{{ pokemon.type }}</div>
       <div>{{ pokemon.genera }}</div>
@@ -17,6 +17,7 @@
           v-bind:name="pokemon.name"
           v-bind:genera="pokemon.genera"
           v-bind:type="pokemon.type"
+          v-bind:habitat="pokemon.habitat"
           v-bind:sprites="require(`@/assets/images/${this.pokemon.englishName}.png`)"
           v-bind:local="local"
         >
@@ -26,7 +27,7 @@
   <li v-else>
     <h3>{{ index + 1 }}.  ???? </h3>
     <span>
-      <img :src="require(`@/assets/none.jpg`)"/>
+      <img :src="require(`@/assets/images/none.jpg`)"/>
     </span>
       <div>《??》</div>
       <div>??ポケモン</div>
@@ -59,13 +60,9 @@ export default {
       registered: false
     }
   },
-  created () {
-    this.isRegistered()
-  },
+
   methods: {
-    isRegistered() {
-      this.registered = this.pokemon.hasOwnProperty('id')
-    },
+
     async openModal() {
       try {
         const result1 = await axios.get(`${this.$url}pokemon-species/${this.pokemon.id}`)
