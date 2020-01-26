@@ -9,10 +9,7 @@
 
 <script>
 import axios from 'axios'
-const EncountPokemon = function () {
-  return import('@/components/EncountPokemon')
-}
-
+import EncountPokemon from '@/components/EncountPokemon'
 
 export default {
   data: function() {
@@ -41,9 +38,9 @@ export default {
 }
 </script>
 <style>
-  #encount-pokemon {
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
-  }
+#encount-pokemon {
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
 </style>

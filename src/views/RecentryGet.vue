@@ -3,8 +3,8 @@
     <h2>さいきんつかまえたポケモン</h2>
     <div id="count">きょう：{{ todayCount }}</div>
     <div id="toDaycount">ごうけい：{{ count }}</div>
-    <ul v-for="pokemon in limitedRecentryGet"
-      :key="pokemon.id">
+    <ul v-for="(pokemon, index) in limitedRecentryGet"
+      :key="index">
       <li>
         <div><h2>{{ pokemon.name }}</h2></div>
         <div><img id="poke-img" :src="require(`@/assets/images/${pokemon.englishName}.png`)"/></div>
