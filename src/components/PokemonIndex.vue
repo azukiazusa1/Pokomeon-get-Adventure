@@ -9,18 +9,18 @@
       <div>たかさ: {{ pokemon.height / 10 }}m</div>
       <div>おもさ: {{ pokemon.weight / 10 }}Kg</div>
       <div>
-<!--         <pokemon-details
+        <pokemon-details
           @close="closeModal"
-          v-if="modal"
-          v-bind:pokemon="pokemon"
+          v-if="modal && pokemonDetails && species"
+          v-bind:pokemon="pokemonDetails"
           v-bind:species="species"
-          v-bind:name="name"
-          v-bind:genera="genera"
-          v-bind:type="type"
-          v-bind:sprites="sprites"
+          v-bind:name="pokemon.name"
+          v-bind:genera="pokemon.genera"
+          v-bind:type="pokemon.type"
+          v-bind:sprites="require(`@/assets/images/${this.pokemon.englishName}.png`)"
           v-bind:local="local"
         >
-        </pokemon-details> -->
+        </pokemon-details>
       </div>
   </li>
   <li v-else>
@@ -36,7 +36,8 @@
 </template>
 
 <script>
-// import PokemonDetails from '@/components/PokemonDetails.vue'
+import axios from 'axios'
+import PokemonDetails from '@/components/PokemonDetails.vue'
 
 export default {
   props: {
@@ -46,6 +47,7 @@ export default {
   },
   data: function() {
     return {
+      pokeomonDetails: null,
       species : null,
       name: null,
       genera: null,
@@ -64,16 +66,25 @@ export default {
     isRegistered() {
       this.registered = this.pokemon.hasOwnProperty('id')
     },
-    openModal() {
+    async openModal() {
+      try {
+        const result1 = await axios.get(`${this.$url}pokemon-species/${this.pokemon.id}`)
+        this.species = result1.data
+
+        const result2 = await axios.get(`${this.$url}pokemon/${this.pokemon.id}`)
+        this.pokemonDetails = result2.data
+      } catch {
+        alert('通信エラーが発生しました。')
+      }
       this.modal = true;
     },
     closeModal() {
       this.modal = false;
     }
   },
-  // components: {
-  //   PokemonDetails
-  // }
+  components: {
+    PokemonDetails
+  }
 }
 
 </script>
@@ -95,7 +106,7 @@ export default {
   li{
     display: inline;
     width:32%;
-    height:32%;
+    min-height: 260px;
     background: #FFFFFF;
     box-sizing: border-box;
     margin-right:0.5%;

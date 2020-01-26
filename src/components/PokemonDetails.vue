@@ -315,6 +315,13 @@ table {
   }
 }
 
+#egg-group ul {
+  list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0
+}
+
 .flavor_text {
   content: "\A";
   border: groove;
