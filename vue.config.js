@@ -1,5 +1,6 @@
 module.exports = {
+  publicPath: '/Pokomeon-get-Adventure',
   outputDir: 'docs',
-  assetsDir: './',
-  publicPath: './'
+  filenameHashing: false,
+  productionSourceMap: false,
 }
