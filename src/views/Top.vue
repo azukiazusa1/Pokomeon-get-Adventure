@@ -5,7 +5,7 @@
     <h1>ポケモンをつかまえるには?</h1>
     <h3>まずはいきたいばしょをえらびましょう！</h3>
     <h3>5つのエリアからえらべます！</h3>
-    <div><img :src="require(`@/assets/howTo/field.png`)" /></div>
+    <div><img :src="require(`@/assets/howTo/select_field.png`)" /></div>
     <h3>ポケモンたちがでてきたらつかまえたいポケモンをタッチ！</h3>
     <div><img :src="require(`@/assets/howTo/encount.png`)" /></div>
     <h3>ボールをなげてつかまえましょう！</h3>
