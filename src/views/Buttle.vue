@@ -63,7 +63,7 @@ export default {
         const result1 = await axios.get(`${this.$url}pokemon-species/${this.$route.params.name}`)
         this.species = result1.data
 
-        const result2 = await axios.get(`${this.$url}pokemon/${this.$route.params.name}`)
+        const result2 = await axios.get(result1.data.varieties[0].pokemon.url)
         this.pokemon = result2.data
         this.getI18nName()
         this.getI18nGenera()
@@ -141,7 +141,7 @@ export default {
       const pokeData = {
         id: this.pokemon.id,
         name: this.name,
-        englishName: this.pokemon.name,
+        englishName: this.$route.params.name,
         genera: this.genera,
         type: this.type,
         height: this.pokemon.height,
@@ -155,7 +155,7 @@ export default {
       const pokeData = {
         id: this.pokemon.id,
         name: this.name,
-        englishName: this.pokemon.name,
+        englishName: this.$route.params.name,
         date: m,
         habitat: this.habitat
       }

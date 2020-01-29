@@ -48,7 +48,7 @@
             <option value="">すべて</option>
             <option value="forest">もり</option>
             <option value="field">へいち</option>
-            <option value="moiuntain">やま</option>
+            <option value="mountain">やま</option>
             <option value="pond">みずうみ</option>
             <option value="sea">うみ</option>
           </select>

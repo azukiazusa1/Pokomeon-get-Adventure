@@ -5,12 +5,11 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
 
 const initialState = {
-  count: 0,
   pokedex: Array.from(new Array(493).fill({})),
   recentryGet: [],
   filterQuery: {},
   AREA: {
-    kanto: {start:0, end:150},
+    kanto: {start:0, end:151},
     johto: {start:151, end:250},
     hohen: {start:251, end:385},
     sinnoh: {start:386, end:492},
