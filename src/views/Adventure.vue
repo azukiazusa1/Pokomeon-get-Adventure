@@ -35,11 +35,7 @@ img {
   border-radius: 50%;
   background: #333;
 }
-img:hover {
-  transition-duration: 0.3s;
-  transform: scale(1.5);
-  transition-duration: 0.3s;
-}
+
 ul{
   display: flex;
   -webkit-justify-content: flex-start;
@@ -72,6 +68,11 @@ ul{
   }
   li:nth-child(3n){
     margin-right: 0.2%;
+  }
+  img:hover {
+    transition-duration: 0.3s;
+    transform: scale(1.5);
+    transition-duration: 0.3s;
   }
 }
 </style>
