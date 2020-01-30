@@ -17,7 +17,6 @@
           <pokemon-index
             v-for="(pokemon, index) in filteredPokedex"
             v-bind:pokemon="pokemon"
-            v-bind:local="local"
             v-bind:index="index + (filterQuery.area ? $store.state.AREA[filterQuery.area].start : 0)"
             :key="index"
           ></pokemon-index>
@@ -36,7 +35,6 @@ export default {
   name: 'app',
   data: function() {
     return {
-      pokemons: [],
       searchBox: false,
       count: 0,
       word: null,
@@ -47,7 +45,6 @@ export default {
         type: '',
         habitat: '',
       },
-      local: 'JP'
     }
   },
   created(){

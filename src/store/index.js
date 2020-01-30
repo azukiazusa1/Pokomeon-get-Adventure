@@ -68,8 +68,8 @@ export default new Vuex.Store({
       const today = moment().startOf('days')
       return state.recentryGet.filter(v => moment(v.date).isAfter(today)).length
     },
-    getCountById: (state) => (id) => {
-      return state.recentryGet.filter(v => v.id === id).length
+    getCountByName: (state) => (EnglishName) => {
+      return state.recentryGet.filter(v => v.englishName === EnglishName).length
     },
   },
   plugins: [createPersistedState()]

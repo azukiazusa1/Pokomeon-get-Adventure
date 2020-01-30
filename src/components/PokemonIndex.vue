@@ -10,16 +10,10 @@
       <div>おもさ: {{ pokemon.weight / 10 }}Kg</div>
       <div>
         <pokemon-details
+          v-if="modal"
           @close="closeModal"
-          v-if="modal && pokemonDetails && species"
-          v-bind:pokemon="pokemonDetails"
-          v-bind:species="species"
-          v-bind:name="pokemon.name"
-          v-bind:genera="pokemon.genera"
-          v-bind:type="pokemon.type"
-          v-bind:habitat="pokemon.habitat"
+          v-bind:pokemon="pokemon"
           v-bind:sprites="require(`@/assets/images/${this.pokemon.englishName}.png`)"
-          v-bind:local="local"
         >
         </pokemon-details>
       </div>
@@ -37,42 +31,20 @@
 </template>
 
 <script>
-import axios from 'axios'
 import PokemonDetails from '@/components/PokemonDetails.vue'
 
 export default {
   props: {
     pokemon: Object,
-    local: String,
     index: Number
   },
   data: function() {
     return {
-      pokeomonDetails: null,
-      species : null,
-      name: null,
-      genera: null,
-      type: null,
-      types: [],
       modal: false,
-      front: true,
-      shiny: false,
-      registered: false
     }
   },
-
   methods: {
-
-    async openModal() {
-      try {
-        const result1 = await axios.get(`${this.$url}pokemon-species/${this.pokemon.id}`)
-        this.species = result1.data
-
-        const result2 = await axios.get(`${this.$url}pokemon/${this.pokemon.id}`)
-        this.pokemonDetails = result2.data
-      } catch {
-        alert('通信エラーが発生しました。')
-      }
+    openModal() {
       this.modal = true;
     },
     closeModal() {

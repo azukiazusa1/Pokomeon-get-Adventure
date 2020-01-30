@@ -6,17 +6,12 @@
           <pokemon-details
           @close="$router.go(-1)"
           v-if="modal"
-          v-bind:pokemon="pokemon"
-          v-bind:species="species"
-          v-bind:name="name"
-          v-bind:genera="genera"
-          v-bind:type="type"
-          v-bind:habitat="habitat"
+          v-bind:pokemon="pokeData"
           v-bind:sprites="sprites"
-          v-bind:local="local"
         >
         </pokemon-details>
           <div  v-else id="pokemon">
+            <img :src="require(`@/assets/icon/check.png`)" v-if="isGeted"/>
             <transition mode="in-out" v-on:enter="enter">
               <img :key=1 v-if="show" id="img" :src="sprites" />
               <img :key=2 v-else id="ball" :src="require(`@/assets/icon/ball.png`)" />
@@ -47,16 +42,20 @@ export default {
       genera: null,
       sprites: require(`@/assets/images/${this.$route.params.name}.png`),
       type: null,
+      flavorText: null,
+      isGeted: false,
       local: 'JP'
     }
   },
   created() {
+    this.isGeted = this.$store.getters.getCountByName(this.$route.params.name) > 0
     this.getPokemon()
   },
   mounted() {
     this.visitingAnime()
   },
   mixins: [mixin],
+
   methods: {
     getPokemon: async function() {
       try {
@@ -68,10 +67,16 @@ export default {
         this.getI18nName()
         this.getI18nGenera()
         this.getTypes()
+        this.getI18nFlavorText()
         this.habitat = this.species.pal_park_encounters[0].area.name
       } catch {
         alert('通信エラーが発生しました。')
       }
+    },
+    getI18nFlavorText: function() {
+      const flavor_text_entries = this.species.flavor_text_entries;
+      const result = flavor_text_entries.find(v => v.language.name === this.$language[this.local]);
+      this.flavorText = result.flavor_text;
     },
 
     visitingAnime: function() {
@@ -138,7 +143,7 @@ export default {
       }
     },
     registPokedex: function() {
-      const pokeData = {
+        const pokeData = {
         id: this.pokemon.id,
         name: this.name,
         englishName: this.$route.params.name,
@@ -146,8 +151,10 @@ export default {
         type: this.type,
         height: this.pokemon.height,
         weight: this.pokemon.weight,
+        flavorText: this.flavorText,
         habitat: this.habitat
       }
+      this.pokeData = pokeData
       this.$store.commit('registPokedex', pokeData)
     },
     registRecentryGet: function() {
@@ -164,9 +171,6 @@ export default {
     throwBall: function() {
       this.show = !this.show
     },
-    a: function() {
-      this.modal = true
-    }
   },
   components: {
     PokemonDetails
@@ -201,7 +205,7 @@ export default {
   display: flex;
 }
 
-#pokemon, img, #ball{
+#pokemon, #img, #ball{
   left: 0;
   right: 0;
   margin: auto;
@@ -215,7 +219,7 @@ export default {
 #ball {
   position: absolute;
 }
-img {
+#img {
   display: block;
 }
 

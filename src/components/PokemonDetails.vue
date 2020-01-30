@@ -5,24 +5,22 @@
         <div class="modal-content">
           <div class='flex'>
             <div class="b">
-              <div>{{ pokemon.id }}. {{ name }}</div>
+              <div>{{ pokemon.id }}. {{ pokemon.name }}</div>
                 <img v-bind:src="sprites"/>
               </div>
             <div class="c">
-              <div>{{ type }}</div>
-              <div>{{ genera }}</div>
+              <div>{{ pokemon.type }}</div>
+              <div>{{ pokemon.genera }}</div>
               <div>たかさ: {{ pokemon.height / 10 }}m</div>
               <div>おもさ: {{ pokemon.weight / 10 }}Kg</div>
             </div>
             <div class="d">
-              <div class="text">
-                <div>せいそくち: {{ $store.state.HABITAT[habitat] }}</div>
-                <div>つかまえたかず: {{ $store.getters.getCountById(pokemon.id) }}</div>
-              </div>
+              <div>せいそくち: {{ $store.state.HABITAT[pokemon.habitat] }}</div>
+              <div>つかまえたかず: {{ $store.getters.getCountByName(pokemon.englishName) }}</div>
             </div>
           </div>
           <div class="flavor_text">
-            {{ getI18nFlavorText }}
+            {{ pokemon.flavorText }}
           </div>
           <div>
             <a class="close" @click.self="$emit('close')">閉じる</a>
@@ -35,23 +33,10 @@
 
 <script>
 export default {
-  props: [
-  'pokemon',
-  'species',
-  'type',
-  'name',
-  'genera',
-  'habitat',
-  'sprites',
-  'local'
-  ],
-  computed: {
-    getI18nFlavorText: function() {
-      const flavor_text_entries = this.species.flavor_text_entries;
-      const result = flavor_text_entries.find(v => v.language.name === this.$language[this.local]);
-      return result.flavor_text;
-    },
-  },
+  props: {
+    pokemon: Object,
+    sprites: String
+  }
 }
 </script>
 
@@ -206,4 +191,10 @@ export default {
   transition: .4s;
   border-bottom: solid 4px #627295;
 }
+
+.d {
+   display: table-cell; 
+    vertical-align: middle;
+}
+
 </style>
