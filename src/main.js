@@ -4,11 +4,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheckCircle, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faSearch, faHeart, faHeartbeat} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 require('vue-flash-message/dist/vue-flash-message.min.css');
 
-library.add(faCheckCircle, faSearch)
+library.add(faCheckCircle, faSearch, faHeart, faHeartbeat)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

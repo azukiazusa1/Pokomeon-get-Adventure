@@ -5,7 +5,13 @@
         <div class="modal-content">
           <div class='flex'>
             <div class="b">
-              <div>{{ pokemon.id }}. {{ pokemon.name }}</div>
+              <div>
+                {{ pokemon.id }}. {{ pokemon.name }}
+                <font-awesome-icon icon="heart" style="color: #808080" @click="toggleLike" 
+                  v-if="!like"/>
+                <font-awesome-icon icon="heart" style="color: #E0245E" @click="toggleLike" 
+                  v-if="like"/>
+              </div>
                 <img v-bind:src="sprites"/>
               </div>
             <div class="c">
@@ -36,7 +42,18 @@ export default {
   props: {
     pokemon: Object,
     sprites: String
-  }
+  },
+  data: function() {
+    return {
+      like: this.$store.getters.isLike(this.pokemon.id)
+    }
+  },
+  methods: {
+    toggleLike: function() {
+      this.$store.commit('toggleLike', this.pokemon.id)
+      this.like = !this.like
+    }
+  },
 }
 </script>
 

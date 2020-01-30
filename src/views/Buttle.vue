@@ -6,7 +6,7 @@
           <pokemon-details
           @close="$router.go(-1)"
           v-if="modal"
-          v-bind:pokemon="pokeData"
+          v-bind:pokemon="$store.state.pokedex[pokemon.id - 1]"
           v-bind:sprites="sprites"
         >
         </pokemon-details>
@@ -152,7 +152,8 @@ export default {
         height: this.pokemon.height,
         weight: this.pokemon.weight,
         flavorText: this.flavorText,
-        habitat: this.habitat
+        habitat: this.habitat,
+        like: false,
       }
       this.pokeData = pokeData
       this.$store.commit('registPokedex', pokeData)

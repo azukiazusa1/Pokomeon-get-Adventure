@@ -36,12 +36,15 @@ export default new Vuex.Store({
     },
     registRecentryGet(state, pokeData) {
       state.recentryGet.unshift(pokeData)
+    },
+    toggleLike(state, id) {
+      const found = state.pokedex.find(e => e.id === id)
+      state.pokedex[id - 1].like = !found.like
     }
   },
   getters: {
     filteredPokedex (state) {
       let data = state.pokedex
-
       // 地方で絞り込み
       if (state.filterQuery.area) {
         data = data.slice(state.AREA[state.filterQuery.area].start, state.AREA[state.filterQuery.area].end)
@@ -115,6 +118,7 @@ export default new Vuex.Store({
     },
     registPokedexCount: (state, getters) => getters.filteredPokedex.filter(v => v.id).length,
     registPokedexCountAll: (state, getters) => getters.filteredPokedex.length,
+    isLike: (state) => (id) => state.pokedex[id - 1].like,
     limitedRecentryGet: (state) => state.recentryGet.slice(0, 20),
     recentryGetCount: (state) => state.recentryGet.length,
     todayGetCount: (state) => {
