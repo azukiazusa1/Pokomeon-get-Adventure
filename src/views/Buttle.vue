@@ -11,7 +11,7 @@
         >
         </pokemon-details>
           <div  v-else id="pokemon">
-            <img :src="require(`@/assets/icon/check.png`)" v-if="isGeted"/>
+            <font-awesome-icon icon='check-circle' :style="{ color: '#32CD32' }" v-if="isGeted"/>
             <transition mode="in-out" v-on:enter="enter">
               <img :key=1 v-if="show" id="img" :src="sprites" />
               <img :key=2 v-else id="ball" :src="require(`@/assets/icon/ball.png`)" />

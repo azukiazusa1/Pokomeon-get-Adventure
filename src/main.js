@@ -3,7 +3,15 @@ import VueFlashMessage from 'vue-flash-message';
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCheckCircle, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 require('vue-flash-message/dist/vue-flash-message.min.css');
+
+library.add(faCheckCircle, faSearch)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 Vue.config.productionTip = false
 Vue.prototype.$url = 'https://pokeapi.co/api/v2/'
 Vue.prototype.$language = {

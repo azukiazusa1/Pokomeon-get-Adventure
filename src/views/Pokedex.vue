@@ -13,7 +13,7 @@
       @close="searchBox = false"
     ></search-box>
     <div @click="searchBox = false">
-      <a @click.stop.prevent="searchBox = !searchBox"><img :src="require(`@/assets/icon/search.png`)" id="search-btn"/></a>
+        <font-awesome-icon icon="search" id="search-btn" @click.stop.prevent="searchBox = !searchBox" size="4x"/>
       <div id="main">
         <ul>
           <pokemon-index
