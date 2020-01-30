@@ -4,10 +4,12 @@
     <search-box
       id="search-box"
       v-if="searchBox"
-      v-bind:area.sync="filterQuery.area"
+      v-bind:isRegisted.sync="filterQuery.isRegisted"
       v-bind:word.sync="filterQuery.word"
+      v-bind:area.sync="filterQuery.area"
       v-bind:type.sync="filterQuery.type"
       v-bind:habitat.sync="filterQuery.habitat"
+      v-bind:sort.sync="filterQuery.sort"
       @close="searchBox = false"
     ></search-box>
     <div @click="searchBox = false">
@@ -40,10 +42,12 @@ export default {
       word: null,
       type: null,
       filterQuery: {
-        area: '',
+        isRegisted: false,
         word: '',
+        area: '',
         type: '',
         habitat: '',
+        sort: '',
       },
     }
   },

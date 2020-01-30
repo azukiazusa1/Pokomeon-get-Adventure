@@ -42,6 +42,7 @@ export default {
 
 <style lang="stylus">
 .modal {
+  font-weight: bold;
   &.modal-overlay {
     display: flex;
     align-items: center;
@@ -105,17 +106,6 @@ export default {
 }
 
 @media screen and (min-width: 769px) {
-  .tooltiptext {
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    margin: auto;
-    z-index: 1;
-  }
   .flex{
     display:flex
   }
@@ -142,20 +132,6 @@ export default {
   }
 }
 @media screen and (max-width: 768px) and (max-width: 480px) {
-
-  .tooltiptext {
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 1;
-  }
 
   .b{
     display: inline-block
@@ -190,11 +166,6 @@ export default {
   background-image: linear-gradient(45deg, #d6d6d6 0%, #636363 100%);
   transition: .4s;
   border-bottom: solid 4px #627295;
-}
-
-.d {
-   display: table-cell; 
-    vertical-align: middle;
 }
 
 </style>

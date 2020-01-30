@@ -1,3 +1,4 @@
+
 <template>
   <li class="pokemon-index" v-if="pokemon.hasOwnProperty('id')">
       <h3 id="poke-name" @click=openModal>{{ pokemon.id }}. {{ pokemon.name }}</h3>

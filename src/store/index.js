@@ -41,21 +41,74 @@ export default new Vuex.Store({
   getters: {
     filteredPokedex (state) {
       let data = state.pokedex
+
+      // 地方で絞り込み
       if (state.filterQuery.area) {
         data = data.slice(state.AREA[state.filterQuery.area].start, state.AREA[state.filterQuery.area].end)
       }
+      // 登録ずみのみ
+      if (state.filterQuery.isRegisted) {
+        data = data.filter(v => v.id)
+      }
 
+      // 名前検索
       if (state.filterQuery.word) {
         data = data.filter(v => v.name == state.filterQuery.word)
       }
 
+      // タイプ検索
       if (state.filterQuery.type) {
         const reg = new RegExp(state.filterQuery.type);
         data = data.filter(v => v.type && v.type.match(reg) )
       }
 
+      // 生息地検索
       if (state.filterQuery.habitat) {
         data = data.filter(v => v.habitat && v.habitat === state.filterQuery.habitat)
+      }
+
+      // 並び替え
+      if (state.filterQuery.sort) {
+        data = data.filter(v => v.id)
+        switch(state.filterQuery.sort) {
+          case '1': // 五十音順
+          data.sort((prev, next) => {
+            if (prev.name < next.name) {
+              return -1
+            }
+            if (prev.name > next.name) {
+              return 1
+            }
+            return 0
+          })
+          break
+
+          case '2': // ひくい
+            data.sort((prev, next) => {
+              return prev.height - next.height
+            })
+            break
+          
+          case'3': // たかい
+          data.sort((prev, next) => {
+            return next.height - prev.height
+          })
+          break
+
+          case '4': // おもい
+          data.sort((prev, next) => {
+            return prev.weight - next.weight
+          })
+          break
+        
+        case'5': // 軽い順
+        data.sort((prev, next) => {
+          return next.height - prev.height
+        })
+        break
+          default:
+            break
+        }
       }
 
       return data

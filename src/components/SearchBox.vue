@@ -5,6 +5,14 @@
     <div id="elements">
       <ul>
         <li>
+          <label for="isRegisted">登録済み</label>
+          <input type="checkbox" id="isRegisted" v-model="checkIsRegisted">
+        </li>
+        <li>
+          <label for="word">なまえ：</label>
+          <input type="text" id="word" v-model="inputWord">
+        </li>
+        <li>
           <label for="area">地方：</label>
           <select id="area" v-model="selectArea">
             <option value="">ぜんこく</option>
@@ -14,10 +22,6 @@
             <option value="sinnoh">シンオウ</option>
           </select>
           </li>
-        <li>
-          <label for="word">なまえ：</label>
-          <input type="text" id="word" v-model="inputWord">
-        </li>
         <li>
           <label for="type">タイプ：</label>
           <select id="type" v-model="selectType">
@@ -53,6 +57,17 @@
             <option value="sea">うみ</option>
           </select>
         </li>
+        <li>
+          <label for="sort">ならびかえ</label>
+          <select id="sort" v-model="selectSort">
+            <option value="">ばんごうじゅん</option>
+            <option value="1">五十音じゅん</option>
+            <option value="2">ひくいじゅん</option>
+            <option value="3">たかいじゅん</option>
+            <option value="4">かるいじゅん</option>
+            <option value="5">おもいじゅん</option>
+          </select>
+        </li>
       </ul>
     </div>
   </div>
@@ -61,11 +76,29 @@
 <script>
 export default {
   props: {
-    area: String,
+    isRegisted: Boolean,
     word: String,
+    area: String,
     type: String,
+    sort: String,
   },
   computed: {
+    checkIsRegisted: {
+      get() {
+        return this.isRegisted
+      },
+      set(isRegisted) {
+        this.$emit('update:isRegisted', isRegisted)
+      }
+    },
+    inputWord: {
+      get() {
+        return this.word
+      },
+      set(word) {
+        this.$emit('update:word', word)
+      }
+    },
     selectArea: {
       get() {
         return this.area
@@ -82,14 +115,6 @@ export default {
         this.$emit('update:local', local)
       }
     },
-    inputWord: {
-      get() {
-        return this.word
-      },
-      set(word) {
-        this.$emit('update:word', word)
-      }
-    },
     selectType: {
       get() {
         return this.type
@@ -104,6 +129,14 @@ export default {
       },
       set(habitat) {
         this.$emit('update:habitat', habitat)
+      }
+    },
+    selectSort: {
+      get() {
+        return this.sort
+      },
+      set(sort) {
+        this.$emit('update:sort', sort)
       }
     },
   }
@@ -127,7 +160,7 @@ export default {
 #elements{
   position: absolute;
   top: 50%;
-  transform : translateY(-50%);
+  transform : translateY(-40%);
   font-weight: bold;
 }
 
