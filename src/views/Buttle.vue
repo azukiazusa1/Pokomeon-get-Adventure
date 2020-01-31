@@ -7,13 +7,14 @@
           @close="$router.go(-1)"
           v-if="modal"
           v-bind:pokemon="$store.state.pokedex[pokemon.id - 1]"
-          v-bind:sprites="sprites"
+          v-bind:sprites="getSprites"
         >
         </pokemon-details>
           <div  v-else id="pokemon">
             <font-awesome-icon icon='check-circle' :style="{ color: '#32CD32' }" v-if="isGeted"/>
+            <font-awesome-icon icon='star' :style="{ color: '#1199FF' }" v-if="shiny"/>
             <transition mode="in-out" v-on:enter="enter">
-              <img :key=1 v-if="show" id="img" :src="sprites" />
+              <img :key=1 v-if="show" id="img" :src="getSprites" />
               <img :key=2 v-else id="ball" :src="require(`@/assets/icon/ball.png`)" />
             </transition>
             <button @click="throwBall" v-if="show">ボールをなげる</button>
@@ -40,21 +41,32 @@ export default {
       modal: false,
       name: null,
       genera: null,
-      sprites: require(`@/assets/images/${this.$route.params.name}.png`),
       type: null,
       flavorText: null,
       isGeted: false,
+      shiny: false,
       local: 'JP'
     }
   },
   created() {
     this.isGeted = this.$store.getters.getCountByName(this.$route.params.name) > 0
     this.getPokemon()
+    this.isShiny()
   },
   mounted() {
     this.visitingAnime()
   },
   mixins: [mixin],
+
+  computed: {
+    getSprites: function() {
+      if (this.shiny) {
+        return require(`@/assets/shiny/${this.$route.params.name}.png`)
+      } else {
+        return require(`@/assets/images/${this.$route.params.name}.png`)
+      }
+    }
+  },
 
   methods: {
     getPokemon: async function() {
@@ -73,6 +85,13 @@ export default {
         alert('通信エラーが発生しました。')
       }
     },
+
+    isShiny: function() {
+      if (Math.random() < 0.01) {
+        this.shiny = true
+      }
+    },
+    
     getI18nFlavorText: function() {
       const flavor_text_entries = this.species.flavor_text_entries;
       const result = flavor_text_entries.find(v => v.language.name === this.$language[this.local]);
@@ -165,7 +184,8 @@ export default {
         name: this.name,
         englishName: this.$route.params.name,
         date: m,
-        habitat: this.habitat
+        habitat: this.habitat,
+        shiny: this.shiny
       }
       this.$store.commit('registRecentryGet', pokeData)
     },

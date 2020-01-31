@@ -6,8 +6,8 @@
     <ul v-for="(pokemon, index) in limitedRecentryGet"
       :key="index">
       <li>
-        <div><h2>{{ pokemon.name }}</h2></div>
-        <div><img id="poke-img" :src="require(`@/assets/images/${pokemon.englishName}.png`)"/></div>
+        <div><h2><font-awesome-icon icon='star' :style="{ color: '#1199FF' }" size="xs"/>{{ pokemon.name }}</h2></div>
+        <div><img id="poke-img" :src="require(`@/assets/shiny/${pokemon.englishName}.png`)"/></div>
         <div>つかまえたひ：{{ pokemon.date }}</div>
         <div>つかまえたばしょ：{{ $store.state.HABITAT[pokemon.habitat] }}</div>
       </li>
@@ -22,7 +22,7 @@ export default {
   data: function() {
     return {
       count: 0,
-      todayCount: 0
+      todayCount: 0,
     }
   },
   mounted () {
