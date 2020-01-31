@@ -152,15 +152,9 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.4);
-  min-width: 200px;
-  min-height: 200px;
+  min-width: 270px;
+  min-height: 270px;
   border-radius: 10px;
-}
-
-#elements{
-  position: absolute;
-  top: 50%;
-  transform : translateY(-40%);
   font-weight: bold;
 }
 
@@ -173,6 +167,10 @@ export default {
 ul{
   list-style: none;
   padding: 0;
+}
+
+li {
+  padding: 5px
 }
 
 </style>

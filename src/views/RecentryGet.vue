@@ -5,12 +5,7 @@
     <div id="toDaycount">ごうけい：{{ count }}</div>
     <ul v-for="(pokemon, index) in limitedRecentryGet"
       :key="index">
-      <li>
-        <div><h2><font-awesome-icon icon='star' :style="{ color: '#1199FF' }" size="xs"/>{{ pokemon.name }}</h2></div>
-        <div><img id="poke-img" :src="require(`@/assets/shiny/${pokemon.englishName}.png`)"/></div>
-        <div>つかまえたひ：{{ pokemon.date }}</div>
-        <div>つかまえたばしょ：{{ $store.state.HABITAT[pokemon.habitat] }}</div>
-      </li>
+      <get-pokemon-list :pokemon="pokemon"></get-pokemon-list>
     </ul>
  </div>
 </template>
@@ -18,6 +13,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import anime from 'animejs'
+import GetPokemonList from '@/components/GetPokemonList'
+
 export default {
   data: function() {
     return {
@@ -62,6 +59,10 @@ export default {
     'recentryGetCount',
     'todayGetCount',
     ])
+  ,
+  components: {
+    GetPokemonList
+  }
 }
 </script>
 
@@ -73,32 +74,5 @@ ul {
   display: flex;
   justify-content: center;
   padding: 0
-}
-@media screen and (max-width: 480px) {
-  li{
-    display: inline;
-    width:90%;
-    height:32%;
-    background: #333;
-    box-sizing: border-box;
-    margin-right:0.5%;
-    margin-top:5px;
-    border-radius: 10px
-  }
-}
-@media screen and (min-width: 481px){
-  li{
-    display: inline;
-    width:32%;
-    min-height: 260px;
-    background: #333;
-    box-sizing: border-box;
-    margin-right:0.5%;
-    margin-top:5px;
-    border-radius: 10px
-  }
-  li:nth-child(3n){
-    margin-right: 0.2%;
-  }
 }
 </style>

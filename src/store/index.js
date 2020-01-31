@@ -77,16 +77,16 @@ export default new Vuex.Store({
         data = data.filter(v => v.id)
         switch(state.filterQuery.sort) {
           case '1': // 五十音順
-          data.sort((prev, next) => {
-            if (prev.name < next.name) {
-              return -1
-            }
-            if (prev.name > next.name) {
-              return 1
-            }
-            return 0
-          })
-          break
+            data.sort((prev, next) => {
+              if (prev.name < next.name) {
+                return -1
+              }
+              if (prev.name > next.name) {
+                return 1
+              }
+              return 0
+            })
+            break
 
           case '2': // ひくい
             data.sort((prev, next) => {
@@ -95,24 +95,25 @@ export default new Vuex.Store({
             break
           
           case'3': // たかい
-          data.sort((prev, next) => {
-            return next.height - prev.height
-          })
-          break
+            data.sort((prev, next) => {
+              return next.height - prev.height
+            })
+            break
 
           case '4': // おもい
-          data.sort((prev, next) => {
-            return prev.weight - next.weight
-          })
-          break
+            data.sort((prev, next) => {
+              return prev.weight - next.weight
+            })
+            break
         
           case'5': // 軽い順
-          data.sort((prev, next) => {
-            return next.weight - prev.weight
-          })
-        break
-          default:
+            data.sort((prev, next) => {
+              return next.weight - prev.weight
+            })
             break
+
+        default:
+          break
         }
       }
 
@@ -127,9 +128,15 @@ export default new Vuex.Store({
       const today = moment().startOf('days')
       return state.recentryGet.filter(v => moment(v.date).isAfter(today)).length
     },
-    getCountByName: (state) => (EnglishName) => {
-      return state.recentryGet.filter(v => v.englishName === EnglishName).length
+    getByName: (state) => (englishName) => {
+      return state.recentryGet.filter(v => v.englishName === englishName)
     },
+    getCountByName: (state, getters) => (englishName) => {
+      return getters.getByName(englishName).length
+    },
+    isGetedShiny: (state, getters) => (englishName) => {
+      return getters.getByName(englishName).some((v) => v.shiny === true)
+    }
   },
   plugins: [createPersistedState()]
 })

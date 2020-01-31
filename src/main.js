@@ -14,15 +14,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 Vue.prototype.$url = 'https://pokeapi.co/api/v2/'
-Vue.prototype.$language = {
-  JP: 'ja-Hrkt',
-  EN: 'en',
-  KO: 'ko',
-  FR: 'fr',
-  DE: 'de',
-  ES: 'es',
-  IT: 'it',
-};
 
 Vue.use(VueFlashMessage);
 

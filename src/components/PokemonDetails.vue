@@ -12,8 +12,14 @@
                   v-bind:class="{ like: like, dislike: !like }" 
                   @click="toggleLike" 
                 />
+                <font-awesome-icon 
+                  icon="star" 
+                  v-bind:class="{ shiny: shiny, dislike: !shiny }" 
+                  @click="toggleShiny" 
+                  v-if="$store.getters.isGetedShiny(englishName)"
+                />
               </div>
-                <img v-bind:src="sprites"/>
+                <img v-bind:src="getSprites"/>
               </div>
             <div class="c">
               <div>{{ pokemon.type }}</div>
@@ -39,21 +45,30 @@
 </template>
 
 <script>
+import mixin from '@/mixin'
 export default {
   props: {
     pokemon: Object,
-    sprites: String
   },
+
   data: function() {
     return {
-      like: this.$store.getters.isLike(this.pokemon.id)
+      like: this.$store.getters.isLike(this.pokemon.id),
+      englishName: this.pokemon.englishName,
+      shiny: false
     }
   },
+
+  mixins: [mixin],
+
   methods: {
     toggleLike: function() {
       this.$store.commit('toggleLike', this.pokemon.id)
       this.like = !this.like
-    }
+    },
+    toggleShiny: function() {
+      this.shiny = !this.shiny
+    },
   },
 }
 </script>
@@ -192,6 +207,10 @@ export default {
 
 .dislike {
   color: #808080;
+}
+
+.shiny {
+  color: #1199FF
 }
 
 </style>

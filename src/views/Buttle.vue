@@ -36,6 +36,7 @@ export default {
     return {
       pokemon: null,
       species: null,
+      englishName: this.$route.params.name,
       show: true,
       rateModify: 0,
       modal: false,
@@ -45,11 +46,11 @@ export default {
       flavorText: null,
       isGeted: false,
       shiny: false,
-      local: 'JP'
+      local: 'ja-Hrkt'
     }
   },
   created() {
-    this.isGeted = this.$store.getters.getCountByName(this.$route.params.name) > 0
+    this.isGeted = this.$store.getters.getCountByName(this.englishName) > 0
     this.getPokemon()
     this.isShiny()
   },
@@ -58,20 +59,10 @@ export default {
   },
   mixins: [mixin],
 
-  computed: {
-    getSprites: function() {
-      if (this.shiny) {
-        return require(`@/assets/shiny/${this.$route.params.name}.png`)
-      } else {
-        return require(`@/assets/images/${this.$route.params.name}.png`)
-      }
-    }
-  },
-
   methods: {
     getPokemon: async function() {
       try {
-        const result1 = await axios.get(`${this.$url}pokemon-species/${this.$route.params.name}`)
+        const result1 = await axios.get(`${this.$url}pokemon-species/${this.englishName}`)
         this.species = result1.data
 
         const result2 = await axios.get(result1.data.varieties[0].pokemon.url)
@@ -91,10 +82,40 @@ export default {
         this.shiny = true
       }
     },
+
+    getI18nName: function() {
+      const names = this.species.names
+      const result = names.find(v => v.language.name === this.local)
+      this.name = result.name
+    },
+    
+    getI18nGenera: function() {
+      const genera = this.species.genera
+      const result = genera.find(v => v.language.name === this.local)
+      this.genera = result.genus
+    },
+
+    getTypes: async function () {
+      const urls = []
+      for (const type of this.pokemon.types) {
+        urls.push(type.type.url)
+      }
+      const types = await Promise.all(urls.map(axios.get))
+      this.getI18nType(types)
+    },
+
+    getI18nType: function(types) {
+      let result_types = ''
+      for (const type of types) {
+        const type_name = type.data.names.find(v => v.language.name === this.local)
+        result_types += `《${type_name.name}》`
+      }
+      this.type = result_types
+    },
     
     getI18nFlavorText: function() {
       const flavor_text_entries = this.species.flavor_text_entries;
-      const result = flavor_text_entries.find(v => v.language.name === this.$language[this.local]);
+      const result = flavor_text_entries.find(v => v.language.name === this.local);
       this.flavorText = result.flavor_text;
     },
 
@@ -165,7 +186,7 @@ export default {
         const pokeData = {
         id: this.pokemon.id,
         name: this.name,
-        englishName: this.$route.params.name,
+        englishName: this.englishName,
         genera: this.genera,
         type: this.type,
         height: this.pokemon.height,
@@ -182,7 +203,7 @@ export default {
       const pokeData = {
         id: this.pokemon.id,
         name: this.name,
-        englishName: this.$route.params.name,
+        englishName: this.englishName,
         date: m,
         habitat: this.habitat,
         shiny: this.shiny
