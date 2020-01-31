@@ -49,6 +49,7 @@ export default new Vuex.Store({
       if (state.filterQuery.area) {
         data = data.slice(state.AREA[state.filterQuery.area].start, state.AREA[state.filterQuery.area].end)
       }
+      
       // 登録ずみのみ
       if (state.filterQuery.isRegisted) {
         data = data.filter(v => v.id)
@@ -56,12 +57,13 @@ export default new Vuex.Store({
 
       // 名前検索
       if (state.filterQuery.word) {
-        data = data.filter(v => v.name == state.filterQuery.word)
+        const reg = new RegExp(state.filterQuery.word, 'y')
+        data = data.filter(v => v.name && v.name.match(reg))
       }
 
       // タイプ検索
       if (state.filterQuery.type) {
-        const reg = new RegExp(state.filterQuery.type);
+        const reg = new RegExp(state.filterQuery.type)
         data = data.filter(v => v.type && v.type.match(reg) )
       }
 

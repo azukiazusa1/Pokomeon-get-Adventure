@@ -7,10 +7,11 @@
             <div class="b">
               <div>
                 {{ pokemon.id }}. {{ pokemon.name }}
-                <font-awesome-icon icon="heart" style="color: #808080" @click="toggleLike" 
-                  v-if="!like"/>
-                <font-awesome-icon icon="heart" style="color: #E0245E" @click="toggleLike" 
-                  v-if="like"/>
+                <font-awesome-icon 
+                  icon="heart" 
+                  v-bind:class="{ like: like, dislike: !like }" 
+                  @click="toggleLike" 
+                />
               </div>
                 <img v-bind:src="sprites"/>
               </div>
@@ -183,6 +184,14 @@ export default {
   background-image: linear-gradient(45deg, #d6d6d6 0%, #636363 100%);
   transition: .4s;
   border-bottom: solid 4px #627295;
+}
+
+.like {
+  color: #E0245E;
+}
+
+.dislike {
+  color: #808080;
 }
 
 </style>
