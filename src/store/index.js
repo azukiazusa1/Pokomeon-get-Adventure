@@ -106,10 +106,10 @@ export default new Vuex.Store({
           })
           break
         
-        case'5': // 軽い順
-        data.sort((prev, next) => {
-          return next.weight - prev.weight
-        })
+          case'5': // 軽い順
+          data.sort((prev, next) => {
+            return next.weight - prev.weight
+          })
         break
           default:
             break
